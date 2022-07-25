@@ -1,0 +1,116 @@
+body {
+    min-width: 400px;
+}
+
+header {
+    width: 90%;
+    margin: 25px auto 0px auto;
+
+    line-height: 130%;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#viewHighscores {
+    text-decoration: none;
+    color: black;
+}
+
+#viewHighscores:hover{
+    border-bottom: 0.5px;
+    border-style: dashed;
+    border-radius: 3px;
+}
+
+#timer {
+    float: right;
+    color: black;
+}
+
+main {
+    width: 80%;
+    position: relative;
+    margin: auto;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+section {
+    position: absolute;
+    width: 80%;
+    margin: auto 10%;
+    text-align: center;
+}
+
+section h1 {
+    width: 90%;
+    margin: 50px auto 10px auto;
+    text-align: center;
+
+    line-height: 120%;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.introduction {
+    visibility: visible;
+}
+
+.questions {
+    visibility: hidden;
+}
+
+.correction {
+    visibility: hidden;
+
+    width: 100%;
+
+    border-top: 1px;
+    border-style: solid;
+    border-color: gray;
+
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+
+    text-align: left;
+    font-style: italic;
+    color: gray;
+}
+
+.introduction p {
+    line-height: 120%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.choices {
+    align-items: center;
+    width: 80%;
+    margin: 5px auto;
+}
+
+button {
+    margin: 5px 0;
+    padding: 5px 0;
+    width: 250px;
+    
+    border: 2px;
+    border-color: darkmagenta;
+    border-style: solid;
+    border-radius: 5px;
+    
+    line-height: 150%;
+    font-size: 12px;
+    font-weight: bold;
+    color: darkmagenta;
+    background-color: white;
+}
+
+button:hover {
+    color: white;
+    background-color: darkmagenta;
+}
