@@ -51,17 +51,7 @@ section h1 {
     font-weight: bold;
 }
 
-.introduction {
-    visibility: visible;
-}
-
-.questions {
-    visibility: hidden;
-}
-
 .correction {
-    visibility: hidden;
-
     width: 100%;
 
     border-top: 1px;
@@ -113,4 +103,15 @@ button {
 button:hover {
     color: white;
     background-color: darkmagenta;
+}
+
+#highscoresList {
+    margin-bottom: 20px;
+}
+
+#highscoresList li {
+    background-color: darkmagenta;
+    color: aliceblue;
+    padding: 10px 20px;
+    text-align: left;
 }

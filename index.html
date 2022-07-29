@@ -16,7 +16,7 @@
     <main>
       <section class="introduction">
         <h1>Coding Quiz Challenge</h1>
-        <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answer will penalize your scores and time by 10 seconds.</p>
+        <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answer will penalize your scores and time by 5 seconds.</p>
         <button id="start-Btn">Start Quiz</button>
       </section>
       <section class="questions">
@@ -30,6 +30,21 @@
         <div class="correction">
           <span id="result">Wrong!</span>
         </div>
+      </section>
+      <section class="records">
+        <h1 id="question">All Done !</h1>
+        <p id=score></p>
+        <form id="recordScores-form">
+          Enter initials: <input type="text" id="initials" name="initials"></input>
+          <button type="submit">Submit</button>
+        </form>
+      </section>
+      <section class="highscores">
+        <h1>Highscores</h1>
+        <ol id="highscoresList">
+        </ol>
+        <button id="goBack">Go Back</button>
+        <button id="clearHighScores">Clear Highscores</button>
       </section>
     </main>
     <script src="./assets/javascript/script.js"></script>
