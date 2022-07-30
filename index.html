@@ -13,12 +13,14 @@
       <a id="viewHighscores" href="">View Highscores</a>
       <span id="timer">TIME: </span>
     </header>
+
     <main>
       <section class="introduction">
         <h1>Coding Quiz Challenge</h1>
         <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answer will penalize your scores and time by 5 seconds.</p>
-        <button id="start-Btn">Start Quiz</button>
+        <button id="start-quiz-Btn">Start Quiz</button>
       </section>
+
       <section class="questions">
         <h1 id="question">Sample Question</h1>
         <ul class="flex-container choices">
@@ -31,14 +33,16 @@
           <span id="result">Wrong!</span>
         </div>
       </section>
+
       <section class="records">
         <h1 id="question">All Done !</h1>
         <p id=score></p>
         <form id="recordScores-form">
-          Enter initials: <input type="text" id="initials" name="initials"></input>
+          Record your Name: <br> <input type="text" id="initials" name="initials"></input>
           <button type="submit">Submit</button>
         </form>
       </section>
+
       <section class="highscores">
         <h1>Highscores</h1>
         <ol id="highscoresList">
@@ -46,6 +50,7 @@
         <button id="goBack">Go Back</button>
         <button id="clearHighScores">Clear Highscores</button>
       </section>
+      
     </main>
     <script src="./assets/javascript/script.js"></script>
   </body>

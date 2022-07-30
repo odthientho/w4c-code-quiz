@@ -53,7 +53,7 @@ var questionList = [
 
 var choices = document.querySelectorAll(".choiceBtn");
 var question = document.querySelector("#question");
-var startBtn = document.querySelector("#start-Btn");
+var startQuizBtn = document.querySelector("#start-quiz-Btn");
 var result = document.querySelector("#result");
 var timer = document.querySelector("#timer");
 var recordScores = document.querySelector("#recordScores-form");
@@ -64,19 +64,15 @@ var viewHighscores = document.querySelector("#viewHighscores");
 var goBackBtn = document.querySelector("#goBack");
 var clearHighScoresBtn = document.querySelector("#clearHighScores");
 
+var maximumTime = 90;
 var questionNum;
 var timeOut;
-var maximumTime = 60;
 var score;
 var highscoreRecords;
 var isLast;
 
-function visibilitySwitch(className, isVisible) {
-    var tmp = document.querySelector("."+className);
-    tmp.setAttribute("style", "visibility: "+isVisible);
-}
-
-function showHighScores() {
+// list all results from LocalStorage and show highscores section
+function showHighscoreBoard() {
     highscoresList.innerHTML = "";
 
     highscoreRecords = [];
@@ -95,28 +91,28 @@ function showHighScores() {
         }
     }
     
-    visibilitySwitch("introduction", "hidden");
-    visibilitySwitch("questions", "hidden");
-    visibilitySwitch("correction", "hidden");
-    visibilitySwitch("records", "hidden");
-    visibilitySwitch("highscores", "visible");
+    showSection("highscores");
 }
 
+// listen to click event of viewHighScores in navigation
 viewHighscores.addEventListener("click", function(event) {
     event.preventDefault();
-    showHighScores();
+    showHighscoreBoard();
 });
 
+// listen to click event of go-back button
 goBackBtn.addEventListener("click", function(event) {
     init();
 });
 
+// listen to click event of clear-HighScores button to clear results in LocalStorage
 clearHighScoresBtn.addEventListener("click", function(event) {
     localStorage.clear();
-    showHighScores();
+    showHighscoreBoard();
 });
 
-recordScores.addEventListener("submit", function(event){
+// to store results to localStorage
+function toRecordResult(event) {
     event.preventDefault();
 
     var nameIni = initials.value;
@@ -125,24 +121,35 @@ recordScores.addEventListener("submit", function(event){
         score: score,
         seconds: maximumTime-timeOut
     }
+
     highscoreRecords = [];
     var temp = JSON.parse(localStorage.getItem("highscoreRecords"));
     if (temp != null) highscoreRecords = temp;
     highscoreRecords.push(record);
     localStorage.setItem("highscoreRecords",JSON.stringify(highscoreRecords));
+
     initials.value = "";
 
-    showHighScores();
-
+}
+// listen to the submit event of recordScores-form
+recordScores.addEventListener("submit", function(event){
+    toRecordResult(event);
+    showHighscoreBoard();
 });
 
-function nextQuestion() {
+// to show Record section
+function showRecord() {
+    scoreSpan.textContent = "Your final score is "+score+" in "+(maximumTime-timeOut+1)+" seconds.";
+    showSection("records");
+    isLast = true;
+}
+
+// move to next question in question List
+function moveToNextQuestion() {
     if (questionNum > questionList.length) return;
+    // if it is last question, switch to records section
     if (questionNum == questionList.length) {
-        scoreSpan.textContent = "Your final score is "+score+" in "+(maximumTime-timeOut+1)+" seconds.";
-        visibilitySwitch("questions", "hidden");
-        visibilitySwitch("records", "visible");
-        isLast = true;
+        showRecord();
         return;
     }
 
@@ -152,8 +159,8 @@ function nextQuestion() {
     }
 }
 
-function setTimeOut() {
-    timer.textContent = "TIME: " + timeOut;
+// set timer clock
+function setTimerClock() {
     var timerInterval = setInterval(function() {
         timeOut--;
         timer.textContent = "TIME: " + timeOut;
@@ -166,62 +173,83 @@ function setTimeOut() {
             timeOut = 0;
             timer.textContent = "TIME: " + timeOut;
             clearInterval(timerInterval);
-            visibilitySwitch("questions", "hidden");
-            visibilitySwitch("records", "visible");
+            showRecord();
         }
     }, 1000);
 }
 
-startBtn.addEventListener("click", function () {
+// when start quiz button is clicked, set timer move to questions and start the first question
+startQuizBtn.addEventListener("click", function () {  
+
+    // Start with question number 1 (index=0)
+    // maximumTime is 120 seconds
+    // score is 0 from beginning
     questionNum = 0;
     timeOut = maximumTime;
+    timer.textContent = "TIME: " + timeOut;
     score = 0;
+
+    // variable to check if it is the last question
     isLast = false;
-    
-    nextQuestion();
-    setTimeOut();
 
-    visibilitySwitch("introduction", "hidden");
-    visibilitySwitch("questions", "visible");
-
+    setTimerClock();
+    showSection("questions");
+    moveToNextQuestion();
 });
 
-function checkAnswer(answerPicked) {
+// check if the selected answer is correct or not
+function checkAnswer(answerSelected) {
     if (questionNum >= questionList.length) return;
 
-    if (answerPicked != questionList[questionNum].correct) {
+    if (answerSelected != questionList[questionNum].correct) {
         result.textContent = "Wrong!";
         timeOut -= 5;
-        if(timeOut <= 0) {
-            clearInterval(timerInterval);
-            visibilitySwitch("questions", "hidden");
-            visibilitySwitch("records", "visible");
-        }
     } else {
-        score++;
         result.textContent = "Correct!";
+        score++;
     }
+    showResult();
 
+    questionNum++;
+    moveToNextQuestion();
+}
+
+// to show Result of the Question within a second
+function showResult() {
     var onesecond = 5;
     var timerInterval = setInterval(function() {
         onesecond--;
-        visibilitySwitch("correction", "visible");
+        setVisibility("correction", "visible");
         if(onesecond === 0) {
             clearInterval(timerInterval);
-            visibilitySwitch("correction", "hidden");
+            setVisibility("correction", "hidden");
         }
     }, 300);
+}
 
-    questionNum++;
-    nextQuestion();
+// set visibility attribute to a class section
+function setVisibility(className, visibleOrHidden) {
+    var tmp = document.querySelector("."+className);
+    tmp.setAttribute("style", "visibility: "+visibleOrHidden);
+}
+
+// switch to the right section
+function showSection(sectionName) {
+    setVisibility("introduction", "hidden");
+    setVisibility("questions", "hidden");
+    setVisibility("highscores", "hidden");
+    setVisibility("records", "hidden");
+    setVisibility("correction", "hidden");
+
+    if (sectionName == "introduction") setVisibility("introduction", "visible");
+    if (sectionName == "questions") setVisibility("questions", "visible");
+    if (sectionName == "highscores") setVisibility("highscores", "visible");
+    if (sectionName == "records") setVisibility("records", "visible");
 }
 
 function init() {
-    visibilitySwitch("introduction", "visible");
-    visibilitySwitch("questions", "hidden");
-    visibilitySwitch("correction", "hidden");
-    visibilitySwitch("records", "hidden");
-    visibilitySwitch("highscores", "hidden");
+    // to start, only section "introduction" showing
+    showSection("introduction");
 }
 
 init();
